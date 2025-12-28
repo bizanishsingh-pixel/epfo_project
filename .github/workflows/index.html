@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CMPF 2025</title>
+<link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo"><img src="cmpf.jpg" alt="CMPF Logo"></div>
+    <div class="org">
+      <div class="title">COAL MINES PROVIDENT FUND ORGANISATION</div>
+      <div class="sub">(Ministry of Coal, Government of India)</div>
+      <div class="desc">Pensioner - Life Certificate / Non Re-Marriage / Age Certificate <span style="color:#1976d2;">2025</span></div>
+    </div>
+    <div class="logo"><img src="digital.png" alt="Digital India Logo"></div>
+  </header>
+
+  <main>
+    <table class="form-table">
+      <tr>
+        <td class="label">Pensioner's Name</td>
+        <td class="field"><input type="text" placeholder="Enter full name"></td>
+        <td class="photo-cell" rowspan="7">
+          <div class="photo-box">Paste<br>Recent Photo</div>
+        </td>
+      </tr>
+      <tr><td class="label">Aadhaar Number</td><td class="field"><input type="text" maxlength="12" placeholder="12-digit Aadhaar"></td></tr>
+      <tr><td class="label">Father's / Husband's Name</td><td class="field"><input type="text" placeholder="Enter name"></td></tr>
+      <tr><td class="label">Spouse Name (As in PS-6)</td><td class="field"><input type="text" placeholder="Enter spouse name"></td></tr>
+      <tr><td class="label">Spouse Aadhaar No.</td><td class="field"><input type="text" maxlength="12" placeholder="12-digit Aadhaar"></td></tr>
+      <tr><td class="label">CMPF A/c No.</td><td class="field"><input type="text" placeholder="Account number"></td></tr>
+      <tr><td class="label">Pension Payment Order No.</td><td class="field"><input type="text" placeholder="Order number"></td></tr>
+      <tr>
+        <td class="label">Regional Office</td>
+        <td class="field">
+          <select>
+            <option value="">-- Select Regional Office --</option>
+            <option>Bhubaneswar</option>
+            <option>Nagpur</option>
+            <option>Dhanbad-I</option>
+            <option>Asansol-I</option>
+            <option>Ranchi-I</option>
+            <option>Deoghar</option>
+            <option>Kolkata</option>
+            <option>Talcher</option>
+            <option>Sambalpur</option>
+            <option>Bilaspur</option>
+            <option>Godavarikhani</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Pension Scheme</td>
+        <td class="field checkbox-group">
+          <label><input type="checkbox"> CMPS '71</label>
+          <label><input type="checkbox"> CMPS '98</label>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Paying Bank</td>
+        <td class="field">
+          <select>
+            <option value="">-- Select Bank --</option>
+            <option>State Bank of India (SBI)</option>
+            <option>Punjab National Bank (PNB)</option>
+            <option>Bank of Baroda</option>
+            <option>Canara Bank</option>
+            <option>Union Bank of India</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>Axis Bank</option>
+            <option>Bank of India</option>
+            <option>Central Bank of India</option>
+            <option>Indian Bank</option>
+            <option>Indian Overseas Bank</option>
+            <option>UCO Bank</option>
+            <option>IDBI Bank</option>
+            <option>Yes Bank</option>
+            <option>Kotak Mahindra Bank</option>
+          </select>
+        </td>
+      </tr>
+      <tr><td class="label">IFSC</td><td class="field"><input type="text" id="ifsc" placeholder="Enter IFSC" onblur="fetchBranchDetails()"></td></tr>
+      <tr><td class="label">Branch</td><td class="field"><input type="text" id="branch" readonly placeholder="Branch auto-filled"></td></tr>
+      <tr><td class="label">Mobile No.</td><td class="field"><input type="text" maxlength="10" placeholder="10-digit mobile"></td></tr>
+      <tr><td class="label">Email</td><td class="field"><input type="text" placeholder="Email address"></td></tr>
+    </table>
+
+    <div class="section-title">1. LIFE CERTIFICATE</div>
+    <p>I hereby certify that I am alive and putting my Signature / LTI / RTI as proof.</p>
+    <div class="sig-row">
+      <div>
+        <div class="sig-box"></div>
+      </div>
+      <div class="sig-details">
+        <input type="text" placeholder="Name">
+        <input type="text" placeholder="Present Address">
+      </div>
+    </div>
+
+    <div class="section-title">2. NON RE-MARRIAGE / AGE CERTIFICATE</div>
+   <td class="field">
+    <p>Please check (✔) the box as applicable</p>
+    <label><input type="checkbox" name="nonRemarriage" value="1"> 1. I hereby declare that I have not re - married and I undertake to report such an event promptly to the pension Disbursing Authority / Bank. (In case of window / windower)</label><br>
+    <label><input type="checkbox" name="nonRemarriage" value="2"> 2. I have not attained the age of 25 years ( In case of son).</label><br>
+    <label><input type="checkbox" name="nonRemarriage" value="3"> 3. I have not married and I have not attained the age of 25 years. (In the case of daughter)</label>
+  </td>
+    <br><br>
+    <div class="sig-row">
+      <div><div class="sig-box"></div></div>
+      <div class="sig-details">
+        <input type="text" placeholder="Place">
+        <input type="text" placeholder="Date (DD/MM/YYYY)">
+      </div>
+    </div>
+
+    <p>(To be submitted in Pension Paying Bank Branch onlu in the Month of November every Year for onward transmission to Nodal Bank after Verification of signature / Thumg impression of the Pensioner by the paying bank)</p>
+
+    <div class="note">
+        <b>NOTE FOR BANK: Bank Branch are Advice to Forward The Life Certificate to their Respective Nodal, Branches at Dhanbad (In Case of State Bank of Hydrabad & Andhra Bank to Hydrabad, Indian Overseas Bank to Kothagudem</b> .
+    </div>
+  </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
