@@ -5,6 +5,7 @@ const session = require("express-session");
 
 const app = express();
 
+/* ---------- MIDDLEWARE ---------- */
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -15,22 +16,34 @@ app.use(session({
   saveUninitialized: true
 }));
 
+/* ---------- DATABASE ---------- */
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Anshcom@EPFO",
-  database: "epfo_management"
+  host: process.env.localhost,
+  user: process.env.root,
+  password: process.env.Anshcom@EPFO,
+  database: process.env.epfo_management,
+  port: process.env.3306
 });
 
-db.connect(() => console.log("DB connected"));
+db.connect(err => {
+  if (err) {
+    console.error("DB error:", err);
+  } else {
+    console.log("DB connected");
+  }
+});
 
-/* ---------- AUTH MIDDLEWARE ---------- */
+/* ---------- HEALTH CHECK ---------- */
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
+
+/* ---------- AUTH ---------- */
 function isLoggedIn(req, res, next) {
   if (req.session.user) next();
   else res.redirect("/login.html");
 }
 
-/* ---------- LOGIN ---------- */
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -38,14 +51,15 @@ app.post("/login", (req, res) => {
     "SELECT * FROM users WHERE username=? AND password=?",
     [username, password],
     (err, rows) => {
-      if (!rows.length) return res.send("Invalid login");
+      if (!rows || rows.length === 0) {
+        return res.send("Invalid login");
+      }
       req.session.user = username;
       res.redirect("/");
     }
   );
 });
 
-/* ---------- LOGOUT ---------- */
 app.get("/logout", (req, res) => {
   req.session.destroy(() => res.redirect("/login.html"));
 });
@@ -68,31 +82,37 @@ app.post("/save-employee", isLoggedIn, (req, res) => {
       d.uan_no, d.handled_by, d.name, d.dob, d.mobile_no, d.uan_password,
       d.aadhaar_no, d.pan_no, d.bank_name, d.account_no, d.ifsc_code, d.address
     ],
-    () => res.redirect("/search.html")
+    err => {
+      if (err) return res.send("DB error");
+      res.redirect("/search.html");
+    }
   );
 });
 
 /* ---------- SEARCH ---------- */
 app.get("/search-employee", isLoggedIn, (req, res) => {
   const q = req.query.q;
+
   db.query(
     "SELECT uan_no FROM employees WHERE mobile_no=? OR uan_no=?",
     [q, q],
-    (e, r) => {
-      if (!r.length) return res.send("No record found");
-      res.redirect(`/profile.html?uan=${r[0].uan_no}`);
+    (err, rows) => {
+      if (!rows || rows.length === 0) {
+        return res.send("No record found");
+      }
+      res.redirect(`/profile.html?uan=${rows[0].uan_no}`);
     }
   );
 });
 
-/* ---------- PROFILE + SUMMARY ---------- */
+/* ---------- PROFILE ---------- */
 app.get("/employee/:uan", isLoggedIn, (req, res) => {
   db.query(
     "SELECT * FROM employees WHERE uan_no=?",
     [req.params.uan],
     (e, emp) => {
       db.query(
-        "SELECT * FROM pf_records WHERE uan_no=? ORDER BY apply_date DESC",
+        "SELECT * FROM pf_records WHERE uan_no=?",
         [req.params.uan],
         (e2, pf) => res.json({ emp: emp[0], pf })
       );
@@ -117,6 +137,8 @@ app.post("/add-pf", isLoggedIn, (req, res) => {
   );
 });
 
-app.listen(3000, () =>
-  console.log("Server running → http://localhost:3000/login.html")
-);
+/* ---------- PORT (MOST IMPORTANT) ---------- */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});
