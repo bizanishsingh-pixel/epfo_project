@@ -19,8 +19,8 @@ app.use(session({
 /* ---------- DATABASE ---------- */
 const db = mysql.createConnection({
   host: "localhost",
-  user: "epfo_user",
-  password: "epfo123",
+  user: "anshcom",
+  password: "ansh123",
   database: "epfo_management",
   port: 3306
 });
@@ -142,6 +142,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
 
 
 
