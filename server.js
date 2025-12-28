@@ -18,11 +18,11 @@ app.use(session({
 
 /* ---------- DATABASE ---------- */
 const db = mysql.createConnection({
-  host: process.env.localhost,
-  user: process.env.root,
-  password: process.env.Anshcom@EPFO,
-  database: process.env.epfo_management,
-  port: process.env.3306
+  host: process.env.MYSQLHOST || "localhost",
+  user: process.env.MYSQLUSER || "root",
+  password: process.env.MYSQLPASSWORD || "anshcom",
+  database: process.env.MYSQLDATABASE || "epfo_management",
+  port: process.env.MYSQLPORT || 3306
 });
 
 db.connect(err => {
@@ -142,3 +142,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
