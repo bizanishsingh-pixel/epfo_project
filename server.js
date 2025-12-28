@@ -20,7 +20,7 @@ app.use(session({
 const db = mysql.createConnection({
   host: process.env.MYSQLHOST || "localhost",
   user: process.env.MYSQLUSER || "root",
-  password: process.env.MYSQLPASSWORD || "anshcom",
+  password: process.env.MYSQLPASSWORD || "",
   database: process.env.MYSQLDATABASE || "epfo_management",
   port: process.env.MYSQLPORT || 3306
 });
@@ -142,4 +142,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
 
