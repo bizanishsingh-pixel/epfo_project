@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="style.css">
+
+<div class="header">Add New Employee</div>
+
+<div class="container">
+  <div class="card">
+
+<form method="POST" action="/save-employee">
+
+<div class="row">
+  <input name="handled_by" placeholder="Handled By">
+  <input name="name" placeholder="Employee Name" required>
+</div>
+
+<div class="row">
+  <input type="date" name="dob">
+  <input name="mobile_no" placeholder="Mobile Number">
+</div>
+
+<div class="row">
+  <input name="uan_no" placeholder="UAN Number" required>
+  <input name="uan_password" placeholder="UAN Password">
+</div>
+
+<div class="row">
+  <input name="aadhaar_no" placeholder="Aadhaar">
+  <input name="pan_no" placeholder="PAN">
+</div>
+
+<div class="row">
+  <input name="bank_name" placeholder="Bank Name">
+  <input name="account_no" placeholder="Account No">
+  <input name="ifsc_code" placeholder="IFSC">
+</div>
+
+<textarea name="address" placeholder="Address"></textarea>
+
+<button class="btn">Save Employee</button>
+
+</form>
+
+  </div>
+</div>

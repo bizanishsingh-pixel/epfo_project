@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="style.css">
+
+<div class="header">Employee Profile</div>
+
+<div class="container">
+
+  <div class="card" id="profile"></div>
+
+  <div class="card">
+    <h3>PF Summary</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Form</th>
+          <th>Status</th>
+          <th>Paid</th>
+          <th>Pending</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody id="pf"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Add PF / Payment</h3>
+
+    <form method="POST" action="/add-pf">
+      <input type="hidden" name="uan_no" id="uan">
+
+      <div class="row">
+        <input type="date" name="apply_date">
+        <input name="form_type" placeholder="Form Type">
+        <select name="status">
+          <option>Pending</option>
+          <option>Done</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <input name="paid_amount" placeholder="Paid Amount">
+        <input name="pending_amount" placeholder="Pending Amount">
+      </div>
+
+      <textarea name="remark" placeholder="Remark"></textarea>
+
+      <button class="btn">Add Record</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  return dateStr.split("T")[0];   // yyyy-mm-dd
+}
+
+const uan = new URLSearchParams(location.search).get("uan");
+document.getElementById("uan").value = uan;
+
+fetch("/employee/" + uan)
+.then(r => r.json())
+.then(d => {
+  profile.innerHTML = `
+    <h3>${d.emp.name}</h3>
+    <p><b>Mobile:</b> ${d.emp.mobile_no}</p>
+    <p><b>UAN:</b> ${d.emp.uan_no}</p>
+    <p><b>password:</b> ${d.emp.uan_password}</p>
+    <p><b>DOB:</b> ${formatDate(d.emp.dob)}</p>
+    <p><b>Aadhaar:</b> ${d.emp.aadhaar_no}</p>
+    <p><b>PAN:</b> ${d.emp.pan_no}</p>
+    <p><b>Bank:</b> ${d.emp.bank_name} - ${d.emp.account_no} (IFSC: ${d.emp.ifsc_code})</p>
+    <p><b>Address:</b> ${d.emp.address}</p>
+  `;
+
+  d.pf.forEach(p => {
+    pf.innerHTML += `
+      <tr>
+       <td>${formatDate(p.apply_date)}</td>
+        <td>${p.form_type}</td>
+        <td>
+          <span class="badge ${p.status === "Done" ? "done" : "pending"}">
+            ${p.status}
+          </span>
+        </td>
+        <td>${p.paid_amount}</td>
+        <td>${p.pending_amount}</td>
+        <td>${p.remark || ""}</td>
+      </tr>`;
+  });
+});
+</script>
