@@ -45,27 +45,37 @@ function isLoggedIn(req, res, next) {
 }
 
 app.post("/login", (req, res) => {
+  SELECT * FROM users;
   const { username, password } = req.body;
 
-  db.query(
-    "SELECT * FROM users WHERE username=? AND password=?",
-    [username, password],
-    (err, rows) => {
-      if (!rows || rows.length === 0) {
-        return res.send("Invalid login");
-      }
-      req.session.user = username;
-      res.redirect("/");
+db.query(
+  "SELECT * FROM users WHERE username=? AND password=?",
+  [username, password],
+  (err, rows) => {
+    if (err) {
+      console.log(err);
+      return res.send("DB error");
     }
-  );
-});
+
+    if (rows.length === 0) {
+      return res.send("Invalid login");
+    }
+
+    req.session.user = rows[0].username;
+    res.redirect("/");
+  }
+);
+
 
 app.get("/logout", (req, res) => {
   req.session.destroy(() => res.redirect("/login.html"));
 });
 
 /* ---------- HOME ---------- */
-app.get("/", isLoggedIn, (req, res) => {
+app.get("/", (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login.html");
+  }
   res.sendFile(path.join(__dirname, "home.html"));
 });
 
@@ -142,6 +152,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
 
 
 
